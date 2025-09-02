@@ -1,4 +1,4 @@
-package com.guildkeeper.backend.model;
+package com.guildkeeper.backend.model.map;
 
 public class MapAnnotation {
 

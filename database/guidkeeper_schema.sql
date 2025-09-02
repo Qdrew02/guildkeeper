@@ -115,3 +115,27 @@ CREATE TABLE inventory_item (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE quests (
+    quest_id SERIAL PRIMARY KEY,
+    campaign_id INT NOT NULL,
+    creator_id INT NOT NULL,
+    quest_giver VARCHAR(100) NOT NULL,
+    title VARCHAR(150) NOT NULL,
+    description TEXT NOT NULL,
+    status VARCHAR(20) NOT NULL CHECK (status IN ('ACTIVE', 'FAILED', 'COMPLETE', 'INACTIVE')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (campaign_id) REFERENCES campaign(campaign_id),
+    FOREIGN KEY (creator_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE quest_updates (
+    update_id SERIAL PRIMARY KEY,
+    quest_id INT NOT NULL,
+    user_id INT NOT NULL,
+    content TEXT NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (quest_id) REFERENCES quests(quest_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
