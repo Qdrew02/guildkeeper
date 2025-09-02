@@ -1,0 +1,25 @@
+# Java
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Maven / Gradle
+.mvn/
+.settings/
+.classpath
+.project
+.gradle/
+build/
+
+# Node
+node_modules/
+dist/
+.vite/
+.next/
+*.log
+
+# Environment files
+.env
+.env.local
