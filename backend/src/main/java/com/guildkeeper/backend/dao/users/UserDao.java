@@ -9,4 +9,6 @@ public interface UserDao {
     User getUserByUsername(String username);
     List<User> getAllUsers();
     boolean deleteUser(int userId);
+
+    User findByUsername(String username);
 }
