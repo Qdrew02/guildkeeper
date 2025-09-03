@@ -1,6 +1,8 @@
 package com.guildkeeper.backend.dao.users;
 
 import com.guildkeeper.backend.model.user.User;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 public interface UserDao {
