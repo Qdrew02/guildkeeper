@@ -7,18 +7,20 @@ public class User {
     private String email;
     private String passwordHash;
     private String role;
+    private boolean active;
     private LocalDateTime createdAt;
 
     //constructors
     public User() {};
 
-    public User(int userId, String username, String email, String passwordHash, String role, LocalDateTime createdAt) {
+    public User(int userId, String username, String email, String passwordHash, String role, LocalDateTime createdAt, boolean active) {
         this.userId = userId;
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;
         this.createdAt = createdAt;
+        this.active = active;
     }
 
     //getters and setters
@@ -69,5 +71,12 @@ public class User {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
