@@ -11,6 +11,5 @@ public interface UserService {
     LoginResponse registerUser(RegisterRequest registerRequest);
 
     LoginResponse authenticateUser(LoginRequest loginRequest);
-
-
+    String getUsernameById(Long userId);
 }

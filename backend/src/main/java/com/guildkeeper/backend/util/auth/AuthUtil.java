@@ -12,7 +12,7 @@ public class AuthUtil {
     public AuthUtil(UserDao userDao) {
         this.userDao = userDao;
     }
-    public int getUserIdFromPrincipal (Principal principal) {
+    public long getUserIdFromPrincipal (Principal principal) {
         return userDao.getUserByUsername(principal.getName()).getUserId();
     }
 }

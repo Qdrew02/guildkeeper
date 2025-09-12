@@ -3,28 +3,23 @@ package com.guildkeeper.backend.model.dto.auth;
 import com.guildkeeper.backend.model.user.User;
 
 public class LoginResponse {
-    private String token;
+    private String accessToken;
+    private String refreshToken;
     private User user;
-    private String username;
 
-    public LoginResponse(String token, User user) {
-        this.token = token;
+    public LoginResponse(String accessToken, String refreshToken, User user) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
         this.user = user;
     }
 
-    public String getToken() {
-        return token;
-    }
+    // getters & setters
+    public String getAccessToken() { return accessToken; }
+    public void setAccessToken(String accessToken) { this.accessToken = accessToken; }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
+    public String getRefreshToken() { return refreshToken; }
+    public void setRefreshToken(String refreshToken) { this.refreshToken = refreshToken; }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 }

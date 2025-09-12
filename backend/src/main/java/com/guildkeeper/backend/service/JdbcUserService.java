@@ -15,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Lazy
 @Service
 public class JdbcUserService implements UserService{
@@ -22,27 +24,31 @@ public class JdbcUserService implements UserService{
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final AuthenticationManager authenticationManager;
+    private final RefreshTokenService refreshTokenService;
+
 
     public JdbcUserService(UserDao userDao,
                        PasswordEncoder passwordEncoder,
                        TokenProvider tokenProvider,
-                       AuthenticationManager authenticationManager) {
+                       AuthenticationManager authenticationManager,
+                       RefreshTokenService refreshTokenService) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
+        this.refreshTokenService = refreshTokenService;
     }
 
     // Registration method
     public LoginResponse registerUser(RegisterRequest registerRequest) {
-        // Create a new User object
+        // 1️⃣ Create a new User object
         User newUser = new User();
         newUser.setUsername(registerRequest.getUsername());
         newUser.setEmail(registerRequest.getEmail());
         newUser.setPasswordHash(registerRequest.getPassword());
         newUser.setRole(registerRequest.getRole() != null ? registerRequest.getRole() : "USER");
 
-        // Persist user in the database
+        // 2️⃣ Persist user in the database
         User createdUser;
         try {
             createdUser = userDao.createUser(newUser);
@@ -50,7 +56,7 @@ public class JdbcUserService implements UserService{
             throw new RuntimeException("Failed to create user", e);
         }
 
-        // Automatically authenticate after registration
+        // 3️⃣ Automatically authenticate after registration
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         registerRequest.getUsername(),
@@ -59,11 +65,17 @@ public class JdbcUserService implements UserService{
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Generate JWT
-        String token = tokenProvider.createToken(authentication, false);
+        // 4️⃣ Generate access token
+        String accessToken = tokenProvider.createToken(authentication, false);
 
-        return new LoginResponse(token, createdUser.getUsername());
+        // 5️⃣ Generate refresh token and store in DB
+        String refreshTokenStr = UUID.randomUUID().toString(); // raw token
+        refreshTokenService.createToken(createdUser.getUserId(), refreshTokenStr, 30); // 30 days
+
+        // 6️⃣ Return full LoginResponse
+        return new LoginResponse(accessToken, refreshTokenStr, createdUser);
     }
+
 
     // Login method
     public LoginResponse authenticateUser(LoginRequest loginRequest) {
@@ -73,9 +85,21 @@ public class JdbcUserService implements UserService{
                         loginRequest.getPassword()
                 )
         );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String accessToken = tokenProvider.createToken(authentication, false);
 
-        String token = tokenProvider.createToken(authentication, false);
-        return new LoginResponse(token, loginRequest.getUsername());
+        User user = userDao.getUserByUsername(loginRequest.getUsername());
+        if (user == null) {
+            throw new RuntimeException("Authenticated user not found in DB");
+        }
+
+        String refreshTokenStr = UUID.randomUUID().toString(); // simple raw token
+        refreshTokenService.createToken(user.getUserId(), refreshTokenStr, 30); // 30 days
+
+        return new LoginResponse(accessToken, refreshTokenStr, user);
+    }
+
+    @Override
+    public String getUsernameById(Long userId) {
+        return null;
     }
 }

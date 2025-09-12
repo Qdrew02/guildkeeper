@@ -1,6 +1,7 @@
 package com.guildkeeper.backend.service;
 
 import com.guildkeeper.backend.model.campaign.Campaign;
+import org.springframework.stereotype.Service;
 
 public interface CampaignService {
     Campaign createCampaign(Campaign campaign, int creatorUserInt);

@@ -55,7 +55,7 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public User getUserById(int userId) {
+    public User getUserById(long userId) {
 
         User user = null;
         String sql = "SELECT * FROM users WHERE user_id = ?";

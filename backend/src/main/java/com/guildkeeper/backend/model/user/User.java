@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDateTime;
 public class User {
-    private int id;
+    private long id;
     private String username;
     private String email;
     @JsonIgnore
@@ -35,7 +35,7 @@ public class User {
 
     //getters and setters
 
-    public int getUserId() {
+    public long getUserId() {
         return id;
     }
 

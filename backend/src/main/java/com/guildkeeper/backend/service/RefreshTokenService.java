@@ -16,11 +16,10 @@ public class RefreshTokenService {
         this.repository = repository;
     }
 
-    public RefreshToken createToken(Long userId, String token, int daysValid, String deviceInfo) {
+    public RefreshToken createToken(Long userId, String token, int daysValid) {
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setUserId(userId);
         refreshToken.setToken(token);
-        refreshToken.setDeviceInfo(deviceInfo);
         refreshToken.setExpiresAt(Instant.now().plusSeconds(daysValid * 24L * 60 * 60));
 
         return repository.save(refreshToken);
