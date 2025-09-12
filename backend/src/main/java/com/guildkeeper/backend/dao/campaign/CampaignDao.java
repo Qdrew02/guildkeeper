@@ -5,8 +5,9 @@ import com.guildkeeper.backend.model.campaign.Campaign;
 import java.util.List;
 
 public interface CampaignDao {
-    Campaign createCampaign(Campaign campaign);
+    Campaign createCampaign(Campaign campaign, int userId);
+
     Campaign getCampaignById(int campaignId);
     List<Campaign> getCampaignsByUser(int userId);
-    boolean deleteCampaign(int campaignId);
+    void deleteCampaign(int campaignId);
 }

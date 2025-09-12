@@ -1,4 +1,4 @@
-package com.guildkeeper.backend.service;
+package com.guildkeeper.backend.service.jdbc;
 
 import com.guildkeeper.backend.dao.users.UserDao;
 import com.guildkeeper.backend.model.dto.auth.LoginRequest;
@@ -6,6 +6,8 @@ import com.guildkeeper.backend.model.dto.auth.LoginResponse;
 import com.guildkeeper.backend.model.dto.auth.RegisterRequest;
 import com.guildkeeper.backend.model.user.User;
 import com.guildkeeper.backend.security.jwt.TokenProvider;
+import com.guildkeeper.backend.service.RefreshTokenService;
+import com.guildkeeper.backend.service.UserService;
 import com.guildkeeper.backend.util.exception.DaoException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +21,7 @@ import java.util.UUID;
 
 @Lazy
 @Service
-public class JdbcUserService implements UserService{
+public class JdbcUserService implements UserService {
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;

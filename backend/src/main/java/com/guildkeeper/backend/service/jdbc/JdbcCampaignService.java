@@ -1,6 +1,7 @@
-package com.guildkeeper.backend.service;
+package com.guildkeeper.backend.service.jdbc;
 
 import com.guildkeeper.backend.model.campaign.Campaign;
+import com.guildkeeper.backend.service.CampaignService;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -7,39 +7,16 @@ import java.time.Instant;
 import java.util.Optional;
 
 
-@Service
-public class RefreshTokenService {
+public interface RefreshTokenService {
 
-    private final RefreshTokenRepository repository;
 
-    public RefreshTokenService(RefreshTokenRepository repository) {
-        this.repository = repository;
-    }
+    RefreshToken createToken(Long userId, String token, int daysValid);
 
-    public RefreshToken createToken(Long userId, String token, int daysValid) {
-        RefreshToken refreshToken = new RefreshToken();
-        refreshToken.setUserId(userId);
-        refreshToken.setToken(token);
-        refreshToken.setExpiresAt(Instant.now().plusSeconds(daysValid * 24L * 60 * 60));
+    Optional<RefreshToken> validateToken(String token);
 
-        return repository.save(refreshToken);
-    }
+    void deleteByToken(String token);
 
-    public Optional<RefreshToken> validateToken(String token) {
-        return repository.findByToken(token)
-                .filter(rt -> rt.getExpiresAt().isAfter(Instant.now()));
-    }
+    void deleteByUserId(Long userId);
 
-    public void deleteByToken(String token) {
-        repository.deleteByToken(token);
-    }
-
-    public void deleteByUserId(Long userId) {
-        repository.deleteByUserId(userId);
-    }
-
-    public Optional<Long> getUserIdFromValidToken(String token) {
-        return validateToken(token).map(RefreshToken::getUserId);
-    }
-
+    Optional<Long> getUserIdFromValidToken(String token);
 }

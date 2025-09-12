@@ -1,6 +1,6 @@
 -- Drop tables in reverse dependency order
 
-
+DROP TABLE IF EXISTS refresh_tokens CASCADE;
 DROP TABLE IF EXISTS player_stats CASCADE;
 DROP TABLE IF EXISTS player_character CASCADE;
 DROP TABLE IF EXISTS stat_definition CASCADE;
@@ -11,8 +11,8 @@ DROP TABLE IF EXISTS map_annotation CASCADE;
 DROP TABLE IF EXISTS map_tile CASCADE;
 DROP TABLE IF EXISTS maps CASCADE;
 DROP TABLE IF EXISTS inventory_item CASCADE;
-DROP TABLE IF EXISTS quest_update CASCADE;
-DROP TABLE IF EXISTS quest CASCADE;
+DROP TABLE IF EXISTS quest_updates CASCADE;
+DROP TABLE IF EXISTS quests CASCADE;
 
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
@@ -22,6 +22,19 @@ CREATE TABLE users (
     role VARCHAR(20) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE refresh_tokens (
+	id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+	user_id int NOT NULL,
+	token TEXT NOT NULL, 
+	device_info TEXT,
+	expires_at TIMESTAMP NOT NULL,
+	created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+	FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE INDEX idx_refresh_tokens_user_id ON refresh_tokens(user_id);
+CREATE INDEX idx_refresh_tokens_token ON refresh_tokens(token);
 
 CREATE TABLE campaign (
     campaign_id SERIAL PRIMARY KEY,
