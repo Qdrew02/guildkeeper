@@ -1,6 +1,6 @@
 package com.guildkeeper.backend.dao.inventory;
 
-import com.guildkeeper.backend.model.Inventory.InventoryItem;
+import com.guildkeeper.backend.model.inventory.InventoryItem;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.guildkeeper.backend.model.Inventory;
+package com.guildkeeper.backend.model.inventory;
 
 import java.time.LocalDateTime;
 

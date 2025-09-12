@@ -1,12 +1,15 @@
 package com.guildkeeper.backend.model.dto.auth;
 
+import com.guildkeeper.backend.model.user.User;
+
 public class LoginResponse {
     private String token;
+    private User user;
     private String username;
 
-    public LoginResponse(String token, String username) {
+    public LoginResponse(String token, User user) {
         this.token = token;
-        this.username = username;
+        this.user = user;
     }
 
     public String getToken() {

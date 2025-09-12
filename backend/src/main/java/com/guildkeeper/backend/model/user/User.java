@@ -1,10 +1,13 @@
 package com.guildkeeper.backend.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDateTime;
 public class User {
-    private int userId;
+    private int id;
     private String username;
     private String email;
+    @JsonIgnore
     private String passwordHash;
     private String role;
     private boolean active;
@@ -14,7 +17,7 @@ public class User {
     public User() {};
 
     public User(int userId, String username, String email, String passwordHash, String role, LocalDateTime createdAt, boolean active) {
-        this.userId = userId;
+        this.id= userId;
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
@@ -22,15 +25,22 @@ public class User {
         this.createdAt = createdAt;
         this.active = active;
     }
+    public User(String username, String passwordHash, String role) {
+        this(0, username, passwordHash, role);
+    }
+
+    public User(int i, String username, String passwordHash, String role) {
+    }
+
 
     //getters and setters
 
     public int getUserId() {
-        return userId;
+        return id;
     }
 
     public void setUserId(int userId) {
-        this.userId = userId;
+        this.id = userId;
     }
 
     public String getUsername() {
