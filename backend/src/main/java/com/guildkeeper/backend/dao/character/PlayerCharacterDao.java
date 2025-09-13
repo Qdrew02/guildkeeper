@@ -9,6 +9,6 @@ public interface PlayerCharacterDao {
     PlayerCharacter getCharacterById(int characterId);
     List<PlayerCharacter> getCharactersByCampaign(int campaignId);
     List<PlayerCharacter> getCharactersByUser(int userId);
-    void updateCharacter(PlayerCharacter character);
+    PlayerCharacter updateCharacter(PlayerCharacter character);
     void deleteCharacter(int characterId);
 }

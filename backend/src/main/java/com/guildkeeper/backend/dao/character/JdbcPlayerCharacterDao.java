@@ -6,7 +6,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.security.core.parameters.P;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,13 +80,44 @@ public class JdbcPlayerCharacterDao implements PlayerCharacterDao {
     }
 
     @Override
-    public void updateCharacter(PlayerCharacter character) {
+    public PlayerCharacter updateCharacter(PlayerCharacter character) {
+        String sql = "UPDATE characters " +
+                "SET role = ?, name = ?, level = ? " +
+                "WHERE character_id = ?";
 
+        try {
+            int rowsUpdated = jdbcTemplate.update(sql,
+                    character.getRole(),
+                    character.getName(),
+                    character.getLevel(),
+                    character.getCharacterId());
+
+            if (rowsUpdated == 0) {
+                throw new DaoException("No character found with ID " + character.getCharacterId());
+            }
+
+            return getCharacterById(character.getCharacterId());
+
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Error connecting to the database", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation updating character " + character.getCharacterId(), e);
+        }
     }
+
+
 
     @Override
     public void deleteCharacter(int characterId) {
-
+        String sql = "DELETE FROM player_characters WHERE character_id = ?";
+        try {
+            int rowsDeleted = jdbcTemplate.update(sql, characterId);
+            if (rowsDeleted == 0) {
+                throw new DaoException("No task deleted. ID may not exist.");
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Error connecting to the database", e);
+        }
     }
 
     private PlayerCharacter mapRowSetToCharacter(SqlRowSet results) {

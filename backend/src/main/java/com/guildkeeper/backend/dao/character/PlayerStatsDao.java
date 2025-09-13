@@ -2,8 +2,12 @@ package com.guildkeeper.backend.dao.character;
 
 import com.guildkeeper.backend.model.character.PlayerStats;
 
+import java.util.List;
+
 public interface PlayerStatsDao {
-    PlayerStats getStatsForCharacter(int characterId);
-    void updateStat(int characterId, int statId, int value);
-    void updateStatVisibility(int statId, boolean isPrivate);
+    List<PlayerStats> getVisibleStats(int characterId);
+    List<PlayerStats> getStatsForCharacter(int characterId);
+
+    void updateStatValue(int characterId, int statId, int newValue);
 }
+
